@@ -12,6 +12,11 @@ hand-edit files here; they're build output with content-hashed names
 (`AtriumX.<hash>.js`/`.css`) for cache-busting.
 
 Public and unauthenticated by design -- the files are framework +
-component code, nothing sensitive. nav-portal's actual data endpoints stay
-behind Google's own `access: MYSELF` auth regardless of who can read this
-JS.
+component code, no credentials or secrets. They DO expose internal
+identifiers (GAS deployment ids, Drive/Sheet ids, the operator OAuth client
+id, noa@ as a contact) which are discoverable but not sensitive on their
+own: every one of them stays access-gated by Google. nav-portal's actual
+data endpoints require RpcGate's server-side idToken domain check (POST) or
+each Sheet/web-app's own `access` scope regardless of who can read this JS.
+The load-bearing assumption is that those scopes are correctly set, not that
+the bundle hides anything.
